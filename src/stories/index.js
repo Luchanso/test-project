@@ -1,13 +1,23 @@
-import React from 'react';
+import React from "react";
 
-import { storiesOf } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
-import { linkTo } from '@storybook/addon-links';
+import { storiesOf } from "@storybook/react";
+import { action, decorateAction } from "@storybook/addon-actions";
+import { withNotes } from "@storybook/addon-notes";
 
-import { Button, Welcome } from '@storybook/react/demo';
+import { Button, Welcome } from "@storybook/react/demo";
 
-storiesOf('Welcome', module).add('to Storybook', () => <Welcome showApp={linkTo('Button')} />);
+const firstArgAction = decorateAction([args => args.slice(0, 1)]);
 
-storiesOf('Button', module)
-  .add('with text', () => <Button onClick={action('clicked')}>Hello Button</Button>)
-  .add('with some emoji', () => <Button onClick={action('clicked')}>😀 😎 👍 💯</Button>);
+storiesOf("My Story", module).add("test button",
+  withNotes("Test note")(() => (
+    <button
+      onClick={args => {
+        console.log(args);
+        action(`Args`)(args, args, args);
+        firstArgAction("Test")(args, args, args);
+      }}
+    >
+      Test
+    </button>
+  ))
+);
